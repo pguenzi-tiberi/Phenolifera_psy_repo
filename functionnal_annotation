@@ -1,0 +1,12 @@
+####### DIAMOND BLASTP SWISSPROT FUNGI ###################
+
+diamond blastp --db Swissprot_fungus_db/uniprotkb_taxonomy_id_4751_AND_reviewed_2024_03_13.fasta --threads 5 -q ../LPCV_PhePsy_1_0_with_mito_proteins.faa --out pp_swissport_fungi.tsv --outfmt 6 -e 0.00001 --ultra-sensitive --max-target-seqs 5
+
+####### INTEPROSCAN PFAM #######################
+
+/bettik/guenzitp/prog/Interproscan/interproscan-5.66-98.0/interproscan.sh -i ../LPCV_PhePsy_1_0_with_mito_proteins.faa -f tsv -appl Pfam -b ./output_interpro_pp -goterms  --cpu 5
+
+####### LOADING ANNOTATION INFORMATION IN GFF3 ##############
+
+conda install -c bioconda agat
+/bettik/guenzitp/prog/mambaforge/envs/agate_env/bin/agat_sp_manage_functional_annotation.pl -f LPCV_PhePsy_1_0_with_mito.gff3 --blast diamond/pp_swissport_fungi.tsv --db diamond/Swissprot_fungus_db/uniprotkb_taxonomy_id_4751_AND_reviewed_2024_03_13.fasta --blast_evalue 0.00001 --interpro interpro/output_interpro_pp.tsv -id JAZHFE --pcds --output LPCV_PhePsy_1_0_with_mito_good_with_pcds_and_id
