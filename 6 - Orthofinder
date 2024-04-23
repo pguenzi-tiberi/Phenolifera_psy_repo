@@ -1,0 +1,17 @@
+####  SPECIES ####
+Phenoliferia psychrophenolica
+Kriegeriales_sp
+Leucospordiium creatinivorum
+Meredithblackwellia eburnea
+Rhodotorula mucilaginosa
+Rhodotorula turoloides
+Rhodotorula glutinis
+Pseudohyphozyma borogiensis
+Sclerotinia borealis
+Sloffia pilatii
+Microbotruym lychnidis-dioicae
+Saccharomyces cerevisae
+Mortiella alpina
+
+##### Command 
+orthofinder -f /bettik/guenzitp/data/Fungus/other_proteome_orthofinder/rProteins_dir -t 20 -M msa -S diamond_ultra_sens -T iqtree -I 1.5
