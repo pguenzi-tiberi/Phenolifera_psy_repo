@@ -10,3 +10,10 @@ diamond blastp --db Swissprot_fungus_db/uniprotkb_taxonomy_id_4751_AND_reviewed_
 
 conda install -c bioconda agat
 /bettik/guenzitp/prog/mambaforge/envs/agate_env/bin/agat_sp_manage_functional_annotation.pl -f LPCV_PhePsy_1_0_with_mito.gff3 --blast diamond/pp_swissport_fungi.tsv --db diamond/Swissprot_fungus_db/uniprotkb_taxonomy_id_4751_AND_reviewed_2024_03_13.fasta --blast_evalue 0.00001 --interpro interpro/output_interpro_pp.tsv -id JAZHFE --pcds --output LPCV_PhePsy_1_0_with_mito_good_with_pcds_and_id
+
+####### Horizontal gene transfer detection ##############
+
+diamond blastp --db /bettik/guenzitp/data/nr_database/nr_db --threads 32 -q ./LPCV_PhePsy_1_0_with_mito_proteins.faa --out pp_nr_results_ultra_sensitive_pluuuuussss_inf_best_prot.tsv --outfmt 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send slen evalue bitscore sskingdoms sphylums sscinames staxids skingdoms salltitles -e 0.0001 --ultra-sensitive --max-target-seqs 800
+awk -F "\t" '{print $1}'pp_nr_results_ultra_sensitive_pluuuuussss_inf_best_prot.tsv | sort| uniq > lis_id_prot_fungi_uniq
+sort -k1 pp_nr_results_ultra_sensitive_pluuuuussss_inf_best_prot.tsv > pp_nr_results_ultra_sensitive_pluuuuussss_inf_best_prot_sorted.tsv
+Alien_index_report_generator --report /abspath/pp_nr_results_ultra_sensitive_pluuuuussss_inf_best_prot_sorted.tsv --id /abspath/lis_id_prot_fungi_uniq --kingdom Fungi
