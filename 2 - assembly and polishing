@@ -1,1 +1,46 @@
 
+
+
+######## DeNovoPlasty assembly ######
+#### Config file : 
+Project:
+-----------------------
+Project name          = MS_pp_mito
+Type                  = mito
+Genome Range          = 20000-80000
+K-mer                 = 33
+Max memory            =
+Extended log          = 0
+Save assembled reads  = no
+Seed Input            = /home/guenzitp/work_dir_bettik/results/final_annotation_Phenoliferia_psychrophenolica/novoplasty/cox1.fasta
+Extend seed directly  =
+Reference sequence    =
+Variance detection    =
+Chloroplast sequence  =
+
+Dataset 1:
+-----------------------
+Read Length           = 300
+Insert size           = 300
+Platform              = illumina
+Single/Paired         = PE
+Combined reads        =
+Forward reads         = /bettik/guenzitp/data/Fungus/MiSeq/trimmed_outdir/Fungi_C2_1_val_1.fq
+Reverse reads         = /bettik/guenzitp/data/Fungus/MiSeq/trimmed_outdir/Fungi_C2_2_val_2.fq
+Store Hash            =
+
+Heteroplasmy:
+-----------------------
+MAF                   =
+HP exclude list       =
+PCR-free              =
+
+Optional:
+-----------------------
+Insert size auto      = yes
+Use Quality Scores    = no
+Reduce ambigious N's  =
+Output path           = /home/guenzitp/work_dir_bettik/results/final_annotation_Phenoliferia_psychrophenolica/novoplasty/test-pp_mito_assembly_tes_heteroplasmy
+
+#### command line
+perl5.32.1 /bettik/guenzitp/prog/NOVOPlasty-NOVOPlasty4.3.1/NOVOPlasty4.3.1.pl -c config_MS_pp.txt
