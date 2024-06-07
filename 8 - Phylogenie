@@ -1,0 +1,3 @@
+############ Model test command ################
+
+./modeltest-ng -i all_ITS2.fas -h uigf -f ef
