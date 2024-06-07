@@ -1,1 +1,6 @@
 ###Mapping metagenomic reads on ITS2 of P.psychrophenolica
+
+bwa mem -t 8 ./ITS_Fungus/ITS_pp.fasta ./data/metagenomes/BL010_1.fq ./data/metagenomes/BL010_2.fq > blo10_its_pp.sam
+samtools view --threads 8 -b blo10_its_pp.sam > blo10_its_pp.bam
+samtools sort --threads 8 blo10_its_pp.bam > blo10_its_pp_sorted.bam
+samtools stats --threads 8 blo10_its_sorted.bam > blo10_its_pp_sorted.stats
