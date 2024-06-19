@@ -17,3 +17,9 @@ diamond blastp --db /bettik/guenzitp/data/nr_database/nr_db --threads 32 -q ./LP
 awk -F "\t" '{print $1}'pp_nr_results_ultra_sensitive_pluuuuussss_inf_best_prot.tsv | sort| uniq > lis_id_prot_fungi_uniq
 sort -k1 pp_nr_results_ultra_sensitive_pluuuuussss_inf_best_prot.tsv > pp_nr_results_ultra_sensitive_pluuuuussss_inf_best_prot_sorted.tsv
 Alien_index_report_generator --report /abspath/pp_nr_results_ultra_sensitive_pluuuuussss_inf_best_prot_sorted.tsv --id /abspath/lis_id_prot_fungi_uniq --kingdom Fungi
+
+
+####### Functional annotation of mito genome in OGDRaw ##########
+###### OGDdraw annotation
+
+BLAT : (option ; Protein search identity=25 ; rRNA, tRNA, DNA search identity = 85, Annotate : CDS and rRNA ; Ignore genes annotated as locus tag ; Ignore genes annotated as ORFs)
