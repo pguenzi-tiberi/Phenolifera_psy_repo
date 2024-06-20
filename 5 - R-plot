@@ -1,1 +1,134 @@
+library(ggplot2)
+library(hrbrthemes)
+library(forcats)
+library(dplyr)
 
+table_all_microbotriomycetes <- read.csv2("microbotryomycete_reference_genome_size.tsv",header=TRUE,sep="\t")
+ggplot(data=table_all_microbotriomycetes,aes(x=Assembly.Stats.Total.Sequence.Length/1000000))+
+  geom_density(fill="#69b3a2", color="#e9ecef", alpha=0.8)  +
+  xlab("Genome size (in Mb)")+
+  ylab ("Density")+
+  theme(legend.position = "none",
+        plot.title = element_text(size=15,hjust = 0.5),
+        axis.title.x = element_text(hjust = 0.5,size=28),
+        axis.title.y = element_text(hjust = 0.5,size=28),
+        axis.text.x = element_text(angle = 45, hjust=1,size=26),
+        axis.text.y = element_text(hjust=1,size=26)
+  )+
+  geom_vline(xintercept = 41.6)
+
+table_all_microbotriomycetes_sup41_6<- table_all_microbotriomycetes %>% 
+  filter(Assembly.Stats.Total.Sequence.Length > 41600000 )
+
+table_all_basidio_size <- read.csv2("basidiopmycota_ref_genome_size.tsv",header=TRUE,sep="\t")
+ggplot(data=table_all_basidio_size,aes(x=Assembly.Stats.Total.Sequence.Length/1000000))+
+  geom_density(fill="#69b3a2", color="#e9ecef", alpha=0.8) +
+  xlab("Genome size (in Mb)")+
+  ylab ("Density")+
+  theme(legend.position = "none",
+        plot.title = element_text(size=15,hjust = 0.5),
+        axis.title.x = element_text(hjust = 0.5,size=28),
+        axis.title.y = element_text(hjust = 0.5,size=28),
+        axis.text.x = element_text(angle = 45, hjust=1,size=26),
+        axis.text.y = element_text(hjust=1,size=26)
+  )+
+  geom_vline(xintercept = 41.6)+
+  xlim(0,500)
+table_all_basidio_size_sup_41_6<- table_all_basidio_size %>% 
+  filter(Assembly.Stats.Total.Sequence.Length > 41600000 )
+ggplot(data=table_all_basidio_size_sup_41_6,aes(x=Assembly.Stats.Total.Sequence.Length/1000000))+
+  geom_density(fill="#69b3a2", color="#e9ecef", alpha=0.8) +
+  xlab("Genome size (in Mb)")+
+  ylab ("Density")+
+  theme(legend.position = "none",
+        plot.title = element_text(size=15,hjust = 0.5),
+        axis.title.x = element_text(hjust = 0.5,size=28),
+        axis.title.y = element_text(hjust = 0.5,size=28),
+        axis.text.x = element_text(angle = 45, hjust=1,size=26),
+        axis.text.y = element_text(hjust=1,size=26)
+  )+
+  geom_vline(xintercept = 41.6)+
+  xlim(0,500)
+
+table_annotated_basidio <- read.csv2("basidiomycota_annotated_genome.tsv",header=TRUE,sep="\t")
+ggplot(data=table_annotated_basidio,aes(x=Annotation.Count.Gene.Total))+
+  geom_density(fill="#69b3a2", color="#e9ecef", alpha=0.8) +
+  xlab("Number of genes")+
+  ylab ("Density")+
+  theme(legend.position = "none",
+        plot.title = element_text(size=15,hjust = 0.5),
+        axis.title.x = element_text(hjust = 0.5,size=28),
+        axis.title.y = element_text(hjust = 0.5,size=28),
+        axis.text.x = element_text(angle = 45, hjust=1,size=26),
+        axis.text.y = element_text(hjust=1,size=26)
+  )+
+  geom_vline(xintercept = 11523)
+
+table_annotated_micro <- read.csv2("micro_annotated_genome.tsv",header=TRUE,sep="\t")
+ggplot(data=table_annotated_micro,aes(x=Annotation.Count.Gene.Total))+
+  geom_density(fill="#69b3a2", color="#e9ecef", alpha=0.8) +
+  xlab("Number of genes")+
+  ylab ("Density")+
+  theme(legend.position = "none",
+        plot.title = element_text(size=15,hjust = 0.5),
+        axis.title.x = element_text(hjust = 0.5,size=28),
+        axis.title.y = element_text(hjust = 0.5,size=28),
+        axis.text.x = element_text(angle = 45, hjust=1,size=26),
+        axis.text.y = element_text(hjust=1,size=26)
+  )+
+  geom_vline(xintercept = 11523)
+
+#### Orthogroups
+table_orthogroups <- read.csv2("Orthogroups.GeneCount.tsv",header=TRUE,sep="\t",row.names=1)
+# Step 2: Calculate the row sums
+row_sums <- rowSums(table_orthogroups)
+
+# Step 3: Add the row sums as a new column to the data frame
+table_orthogroups$Sum <- row_sums
+filtered_df <- table_orthogroups[table_orthogroups$Fungus_transcripts.fasta.transdecoder == table_orthogroups$Total, c("Fungus_transcripts.fasta.transdecoder", "Sum")]
+table_orthogroups$Fungus_transcripts.fasta.transdecoder == table_orthogroups$Sum
+sum(filtered_df$Fungus_transcripts.fasta.transdecoder)
+write.csv(filtered_df,"fungus_orthogroups_specific.csv", row.names = TRUE)
+
+
+### Genes spe phenoliferia psychrophenolica
+table_pp_genes_spe <- read.csv2("table_interpro_spe_gene_pp_good.tsv",header=FALSE,sep="\t")
+colnames(table_pp_genes_spe)<- c("INTERPRO_terms","Nb_genes_with_this_domains")
+
+table_pp_genes_spe %>%
+  mutate(INTERPRO_terms = fct_reorder(INTERPRO_terms, Nb_genes_with_this_domains)) %>%
+  ggplot( aes(x=INTERPRO_terms, y=Nb_genes_with_this_domains)) +
+  geom_bar(stat="identity", fill="black", alpha=.6, width=.4) +
+  coord_flip() +
+  xlab("") +
+  theme_bw()+
+  theme(legend.position = "none",
+        plot.title = element_text(size=15,hjust = 0.5),
+        axis.title.x = element_text(hjust = 0.5,size=15),
+        axis.title.y = element_text(hjust = 0.5,size=28),
+        axis.text.x = element_text(hjust=1,size=14),
+        axis.text.y = element_text(hjust=1,size=11),
+        
+  )+
+  ylab ("Number of genes with the domains")
+
+##### Duplicated genes interpro domains#######
+table_pp_genes_dupplicated <- read.csv2("table_dupplicated_genes_interpro_terms",header=FALSE,sep="\t")
+colnames(table_pp_genes_dupplicated)<- c("INTERPRO_terms","Nb_genes_with_this_domains")
+
+table_pp_genes_dupplicated %>%
+  mutate(INTERPRO_terms = fct_reorder(INTERPRO_terms, Nb_genes_with_this_domains)) %>%
+  ggplot( aes(x=INTERPRO_terms, y=Nb_genes_with_this_domains)) +
+  geom_bar(stat="identity", fill="black", alpha=.6, width=.4) +
+  coord_flip() +
+  xlab("") +
+  theme_bw()+
+  theme(legend.position = "none",
+        plot.title = element_text(size=15,hjust = 0.5),
+        axis.title.x = element_text(hjust = 0.5,size=15),
+        axis.title.y = element_text(hjust = 0.5,size=28),
+        axis.text.x = element_text(hjust=1,size=14),
+        axis.text.y = element_text(hjust=1,size=11),
+        
+  )+
+  ylab ("Number of genes with the domains")
