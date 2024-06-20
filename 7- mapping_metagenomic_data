@@ -1,6 +1,16 @@
-###Mapping metagenomic reads on ITS2 of P.psychrophenolica
+###Mapping metagenomic reads on ITS2 of P.psychrophenolica (Sanguina)
 
 bwa mem -t 8 ./ITS_Fungus/ITS_pp.fasta ./data/metagenomes/BL010_1.fq ./data/metagenomes/BL010_2.fq > blo10_its_pp.sam
 samtools view --threads 8 -b blo10_its_pp.sam > blo10_its_pp.bam
 samtools sort --threads 8 blo10_its_pp.bam > blo10_its_pp_sorted.bam
 samtools stats --threads 8 blo10_its_sorted.bam > blo10_its_pp_sorted.stats
+
+###For Ancylonema data Bowles and al.
+
+bwa mem -t 8 /bettik/guenzitp/data/Fungus/its_pp_index/ITS_pp.fasta SRR28860551_1_val_1.fq SRR28860551_2_val_2.fq > bowles_all_file_its_pp.sam
+samtools view --threads 8 -b -F 4 bowles_all_file_its_pp.sam > bowles_all_file_its_pp_mapped.bam
+samtools sort --threads 8 bowles_all_file_its_pp_mapped.bam > bowles_all_file_its_pp_mapped_sorted.bam
+git clone https://github.com/pguenzi-tiberi/bam_filter_100_id.py.git
+###modify the script ./bam_filter_100_id.py/filtering_100_id_bam.py and replace the variable "input_bam"  by th ename of the file
+python ./bam_filter_100_id.py/filtering_100_id_bam.py
+samtools stats perfect_matches.bam > perfect_matches.stats
